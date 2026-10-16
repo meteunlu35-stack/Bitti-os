@@ -5,11 +5,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: sudo apt-get install -y genisoimage zip unzip
-      - run: |
-          unzip -o "*.zip" || true
-          genisoimage -o output.iso -R -J.
-      - uses: actions/upload-artifact@v4
+
+      - name: Install tools
+        run: sudo apt-get install -y genisoimage unzip
+
+      - name: Unzip all
+        run: |
+          shopt -s nullglob
+          for z in *.zip; do
+            echo "Extracting $z"
+            unzip -o "$z"
+          done
+          ls -R
+
+      - name: Make ISO
+        run: |
+          genisoimage -o MiniOS.iso -R -J.
+          ls -lh *.iso
+
+      - name: Upload ISO
+        uses: actions/upload-artifact@v4
         with:
-          name: ISO
-          path: output.iso
+          name: MiniOS-ISO
+          path: MiniOS.iso
