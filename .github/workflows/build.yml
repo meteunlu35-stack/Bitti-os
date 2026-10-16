@@ -12,11 +12,10 @@ jobs:
       - name: Unzip all
         run: |
           for z in *.zip; do unzip -o "$z"; done || true
+          ls -l
 
       - name: Make ISO
-        run: |
-          xorriso -as mkisofs -o MiniOS.iso -R -J.
-          ls -lh MiniOS.iso
+        run: xorriso -as mkisofs -o MiniOS.iso -R -J .
 
       - name: Upload ISO
         uses: actions/upload-artifact@v4
