@@ -1,0 +1,15 @@
+name: ZIP to ISO
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get install -y genisoimage zip unzip
+      - run: |
+          unzip -o "*.zip" || true
+          genisoimage -o output.iso -R -J.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ISO
+          path: output.iso
