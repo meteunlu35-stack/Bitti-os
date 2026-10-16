@@ -12,16 +12,10 @@ jobs:
       - name: Unzip all
         run: |
           shopt -s nullglob
-          for z in *.zip; do
-            echo "Extracting $z"
-            unzip -o "$z"
-          done
-          ls -R
+          for z in *.zip; do unzip -o "$z"; done
 
       - name: Make ISO
-        run: |
-          genisoimage -o MiniOS.iso -R -J.
-          ls -lh *.iso
+        run: genisoimage -o MiniOS.iso -R -J -l./
 
       - name: Upload ISO
         uses: actions/upload-artifact@v4
